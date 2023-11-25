@@ -6,13 +6,13 @@ ENV GRAILS_HOME=/opt/grails-3.3.10
 ENV PATH="${GRAILS_HOME}/bin:${PATH}"
 WORKDIR /app
 # COPY . .
-RUN git clone https://github.com/ppazos/cabolabs-ehrserver.git .
+RUN git clone https://github.com/christhonie/cabolabs-ehrserver.git .
 RUN /opt/grails-3.3.10/bin/grails war
 
 FROM tomcat:8-jdk8-openjdk
 
 # MySQL is running in the host machine, should docker run --network="host" to connect from the container to the host
-ENV CATALINA_OPTS "-DdataSource.dbCreate=create-drop -DdataSource.url=jdbc:mysql://127.0.0.1:3306/ehrserver2 -DdataSource.username=user -DdataSource.password=user1234"
+ENV CATALINA_OPTS "-DdataSource.dbCreate=create-drop -DdataSource.url=jdbc:mysql://db:3306/ehrserver2 -DdataSource.username=ehrserver2 -DdataSource.password=ehrserver2"
 COPY --from=build /app/opts/base_opts /app/opts/base_opts
 COPY --from=build /app/build/libs/app-2.3.war /usr/local/tomcat/webapps/ROOT.war
 COPY --from=build /app/grails-app/conf/application.yml /app/config.yml

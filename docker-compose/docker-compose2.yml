@@ -1,7 +1,7 @@
 version: '3.0'
 services:
   server:
-    image: tomcat:8.5.81-jdk8
+    image: ehrserver
     depends_on:
       - db
     ports:
@@ -10,9 +10,11 @@ services:
       - ./opts:/usr/local/tomcat/opts
       - ./commits:/usr/local/tomcat/commits
       - ./versions:/usr/local/tomcat/versions
-      - ./../build/libs/cabolabs-ehrserver-2.3.war.original:/usr/local/tomcat/webapps/ROOT.war
+      - ./opts:/app/opts
+      - ./../terminology:/app/terminology
+      #- ./../build/libs/cabolabs-ehrserver-2.3.war.original:/usr/local/tomcat/webapps/ROOT.war
       # can be used to load a custom yml
-      - ./grails-app/conf/application.yml:/app/config.yml
+      - C:\Dev\dxs\ehrserver\grails-app\conf\application.yml:/app/config.yml
     environment:
       - SPRING_CONFIG_LOCATION=/app/config.yml
       - EHRSERVER_MYSQL_DB_BEHAVIOUR=create-drop
@@ -21,7 +23,7 @@ services:
       - EHRSERVER_MYSQL_DB_USERNAME=ehrserver2
       - EHRSERVER_MYSQL_DB_PASSWORD=ehrserver2
       - EHRSERVER_DB_NAME=ehrserver2
-      - EHRSERVER_ALLOW_WEB_USER_REGISTER=false
+      - EHRSERVER_ALLOW_WEB_USER_REGISTER=true
       - EHRSERVER_REST_SECRET=d9507256-e461-4336-a6ec-2f4127954321
       - EHRSERVER_SNQUERY_KEY=22222222-2222-2222-2222-222222222222
       - EHRSERVER_WORKING_FOLDER=/usr/local/tomcat/

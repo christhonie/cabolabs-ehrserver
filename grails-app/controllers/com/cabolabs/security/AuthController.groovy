@@ -87,24 +87,6 @@ class AuthController {
       def from
       if (lastALogs.size() > 0) from = lastALogs[0].timestamp
 
-      def notifications = remoteNotificationsService.getNotifications('ehrserver', session.lang, from)
-
-      notifications.each { notification ->
-         new Notification(
-            name: 'remote',
-            language: session.lang,
-            text: notification.nt,
-            forUser: User.findByEmail(email).id,
-            timestamp: Date.parse("yyyy-MM-dd'T'HH:mm:ss'Z'", notification.ts)
-         ).save()
-      }
-
-      // Mark current read of the remote notifications
-      new ActivityLog(username: email, action: 'remote_notifications', sessionId: session.id.toString()).save()
-
-      // /remote notifications
-
-
       // Select the first Organization of the user as the current org, then they can change it from the GUI
       def user_first_organization = user.firstOrganization
       session.organization = user_first_organization
